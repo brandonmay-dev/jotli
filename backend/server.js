@@ -8,7 +8,19 @@ app.use(express.json());
 
 // Routes
 app.get("/api", (req, res) => {
-  res.json({ message: "Hello from the backend!" });
+  res.status(200).json({ message: "Hello from the backend!" });
+});
+
+app.post("/api", (req, res) => {
+  res.status(201).json({ message: "Note created successfully!" });
+});
+
+app.put("/api/:id", (req, res) => {
+  res.status(200).json({ message: "Note updated successfully!" });
+});
+
+app.delete("/api/:id", (req, res) => {
+  res.status(200).json({ message: "Note deleted successfully!" });
 });
 
 // Server listener
