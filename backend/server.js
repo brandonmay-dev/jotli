@@ -7,19 +7,19 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Routes
-app.get("/api", (req, res) => {
+app.get("/api/notes", (req, res) => {
   res.status(200).json({ message: "Hello from the backend!" });
 });
 
-app.post("/api", (req, res) => {
+app.post("/api/notes", (req, res) => {
   res.status(201).json({ message: "Note created successfully!" });
 });
 
-app.put("/api/:id", (req, res) => {
+app.put("/api/notes/:id", (req, res) => {
   res.status(200).json({ message: "Note updated successfully!" });
 });
 
-app.delete("/api/:id", (req, res) => {
+app.delete("/api/notes/:id", (req, res) => {
   res.status(200).json({ message: "Note deleted successfully!" });
 });
 
