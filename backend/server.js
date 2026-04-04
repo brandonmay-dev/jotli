@@ -1,10 +1,12 @@
 import express from "express";
+import notesRoutes from "./routes/notesRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+app.use("/api/notes", notesRoutes);
 
 // Routes
 app.get("/api/notes", (req, res) => {
