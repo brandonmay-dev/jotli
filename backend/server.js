@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Routes
 app.get("/api/notes", (req, res) => {
-  res.status(200).json({ message: "Hello from the backend!" });
+  res.status(200).json({ message: "Fetched notes successfully!" });
 });
 
 app.post("/api/notes", (req, res) => {
