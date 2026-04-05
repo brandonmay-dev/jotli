@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import RateLimitedUI from "../components/RateLimitedUI";
 
 const Homepage = () => {
-  const [isRateLimited, setIsRateLimited] = useState(false);
+  const [isRateLimited, setIsRateLimited] = useState(true);
 
   return (
     <div className="min-h-screen bg-base-100">
