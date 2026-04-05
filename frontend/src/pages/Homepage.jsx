@@ -34,7 +34,7 @@ const Homepage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen bg-base-100">
       <Navbar />
 
       {isRateLimited ? (
