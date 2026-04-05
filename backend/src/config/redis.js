@@ -1,8 +1,17 @@
 import { Redis } from "@upstash/redis";
+import { Ratelimit } from "@upstash/ratelimit";
+import dotenv from "dotenv";
 
-const redis = new Redis({
+dotenv.config();
+
+// Redis connection
+export const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,
   token: process.env.UPSTASH_REDIS_REST_TOKEN,
 });
 
-export default redis;
+// Rate limiter
+export const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(100, "20 s"),
+});
