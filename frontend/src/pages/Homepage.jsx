@@ -15,7 +15,7 @@ const Homepage = () => {
       setLoading(true);
       setIsRateLimited(false);
 
-      const res = await api.get("http://localhost:3000/api/notes");
+      const res = await api.get("/notes");
       setNotes(res.data);
     } catch (error) {
       if (error.response?.status === 429) {
