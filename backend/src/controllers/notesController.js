@@ -11,6 +11,23 @@ export async function getAllNotes(req, res) {
   }
 }
 
+export async function getNoteById(req, res) {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid note ID format" });
+    }
+    const note = await Note.findById(id);
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+    return res.status(200).json(note);
+  } catch (error) {
+    console.error("Error fetching note:", error);
+    return res.status(500).json({ message: "Error fetching note" });
+  }
+}
+
 export async function createNote(req, res) {
   try {
     const { title, content } = req.body;
