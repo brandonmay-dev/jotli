@@ -1,4 +1,4 @@
-import { Ratelimit } from "@upstash/ratelimit";
+import { ratelimit } from "../config/redis.js";
 
 const rateLimiter = async (req, res, next) => {
   try {
@@ -9,7 +9,7 @@ const rateLimiter = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Rate limit error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
