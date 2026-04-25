@@ -4,14 +4,16 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Redis connection
-export const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
+const hasRedisConfig =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN;
 
-// Rate limiter
-export const ratelimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(10, "20 s"),
-});
+// Redis-backed rate limiting is optional in local development.
+export const ratelimit = hasRedisConfig
+  ? new Ratelimit({
+      redis: new Redis({
+        url: process.env.UPSTASH_REDIS_REST_URL,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+      }),
+      limiter: Ratelimit.slidingWindow(10, "20 s"),
+    })
+  : null;
