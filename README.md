@@ -1,27 +1,55 @@
 # Jotli
 
-Jotli is a full-stack notes application built with React, Express, and MongoDB. It lets users create, browse, edit, and delete notes through a clean single-page interface backed by a REST API.
+Jotli is a full-stack notes application built with the MERN stack. It allows users to create, view, update, and delete notes through a single-page interface powered by a REST API.
 
-## Stack
+---
 
-- Frontend: React 19, Vite, React Router, Axios, Tailwind CSS, DaisyUI, Lucide icons
-- Backend: Node.js, Express 5, Mongoose
-- Database: MongoDB Atlas
-- Optional infrastructure: Upstash Redis for rate limiting
-- Deployment: GitHub Pages for the frontend, Render for the backend
+## Tech Stack
+
+**Frontend**
+
+- React 19 (Vite)
+- React Router
+- Axios
+- Tailwind CSS
+- DaisyUI
+- Lucide Icons
+
+**Backend**
+
+- Node.js
+- Express 5
+- Mongoose
+
+**Database**
+
+- MongoDB Atlas
+
+**Optional Infrastructure**
+
+- Upstash Redis (rate limiting)
+
+**Deployment**
+
+- GitHub Pages (frontend)
+- Render (backend)
+
+---
 
 ## Features
 
-- Create notes with a title and content
+- Create notes with title and content
 - View all notes sorted by newest first
 - Open a note detail page for editing
-- Update or delete existing notes
-- Handle missing notes and failed network requests gracefully
-- Support optional request rate limiting in production
+- Update and delete notes
+- Graceful handling of missing data and network errors
+- Optional API rate limiting
+
+---
 
 ## Project Structure
 
-```text
+```
 Jotli/
 ├── backend/
 │   ├── src/
@@ -42,6 +70,8 @@ Jotli/
 └── .github/workflows/
 ```
 
+---
+
 ## Local Development
 
 ### 1. Install dependencies
@@ -51,135 +81,132 @@ cd backend && npm install
 cd ../frontend && npm install
 ```
 
+---
+
 ### 2. Configure environment variables
 
-Create `backend/.env` with:
+Create `backend/.env`:
 
-```env
+```
 MONGO_URI=your_mongodb_connection_string
 PORT=5001
 ```
 
-Optional backend environment variables:
+Optional:
 
-```env
+```
 UPSTASH_REDIS_REST_URL=your_upstash_url
 UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 ENABLE_RATE_LIMITING=true
 ```
 
-Notes:
+---
 
-- Rate limiting is disabled by default in local development
-- If `ENABLE_RATE_LIMITING=true` is set without valid Upstash credentials, the API will continue without rate limiting
-
-### 3. Start the backend
+### 3. Start backend
 
 ```bash
 cd backend
 npm run dev
 ```
 
-The API runs on `http://localhost:5001`.
+Runs on:
+http://localhost:5001
 
-### 4. Start the frontend
+---
 
-Open a second terminal:
+### 4. Start frontend
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-The Vite dev server proxies `/api` to `http://localhost:5001`, so the frontend can call the API without changing local URLs.
+The Vite dev server proxies `/api` to `http://localhost:5001`.
+
+---
 
 ## API
 
-Base URL in local development:
-
-```text
+Base URL:
 http://localhost:5001/api
-```
 
-Available endpoints:
+| Method | Endpoint   | Description    |
+| ------ | ---------- | -------------- |
+| GET    | /notes     | Get all notes  |
+| GET    | /notes/:id | Get note by ID |
+| POST   | /notes     | Create note    |
+| PUT    | /notes/:id | Update note    |
+| DELETE | /notes/:id | Delete note    |
+| GET    | /          | Health check   |
 
-- `GET /notes` returns all notes
-- `GET /notes/:id` returns one note by MongoDB id
-- `POST /notes` creates a note
-- `PUT /notes/:id` updates a note
-- `DELETE /notes/:id` deletes a note
-- `GET /` returns `{ "status": "ok" }` for backend health checks
+---
 
 ## Frontend Configuration
 
-The frontend API client uses:
+- Uses `VITE_API_BASE_URL` if defined
+- Falls back to `/api` during local development
 
-- `VITE_API_BASE_URL` when it is defined
-- `/api` as the fallback value
-
-That means:
-
-- local development works through the Vite proxy
-- production can point to a hosted backend such as Render
+---
 
 ## Deployment
 
-### Frontend
+### Frontend (GitHub Pages)
 
-The frontend is configured for GitHub Pages deployment through:
+- Built using GitHub Actions
+- Outputs to `frontend/dist`
+- Deployed automatically
 
-- `.github/workflows/deploy-pages.yml`
-- `frontend/vite.config.js`
+Set repository variable:
 
-GitHub Actions builds `frontend/dist` and publishes it to Pages. The app uses hash-based routing so note routes work without server rewrites.
-
-Set a repository variable in GitHub Actions before deploying:
-
-```text
+```
 VITE_API_BASE_URL=https://your-backend-host/api
 ```
 
-### Backend
+---
 
-The backend is designed to run as a separate web service on Render.
+### Backend (Render)
 
-Recommended Render settings:
+Recommended settings:
 
-- Root Directory: `backend`
-- Build Command: `npm install`
-- Start Command: `npm start`
+- Root Directory: backend
+- Build Command: npm install
+- Start Command: npm start
 
-Required Render environment variables:
+Environment variables:
 
-- `MONGO_URI`
+Required:
 
-Optional Render environment variables:
+```
+MONGO_URI
+```
 
-- `UPSTASH_REDIS_REST_URL`
-- `UPSTASH_REDIS_REST_TOKEN`
-- `ENABLE_RATE_LIMITING=true`
+Optional:
 
-If you use MongoDB Atlas, make sure the Render service is allowed through Atlas network access.
+```
+UPSTASH_REDIS_REST_URL
+UPSTASH_REDIS_REST_TOKEN
+ENABLE_RATE_LIMITING=true
+```
 
-## Scripts
+Ensure your MongoDB Atlas cluster allows connections from Render.
 
-### Backend
+---
 
-- `npm run dev` starts the API with `nodemon`
-- `npm start` starts the API with Node
+## Architecture
 
-### Frontend
+Jotli is deployed as two separate services:
 
-- `npm run dev` starts Vite
-- `npm run build` creates a production build
-- `npm run preview` previews the build locally
-- `npm run lint` runs ESLint
+- Static frontend hosted on GitHub Pages
+- Backend API hosted on Render
 
-## Current Architecture
+This separation reduces frontend hosting costs while allowing scalable backend logic and optional Redis-based rate limiting.
 
-Jotli is deployed as two separate apps:
+---
 
-- a static frontend on GitHub Pages
-- a backend API on Render
+## Future Improvements
 
-That split keeps the frontend inexpensive to host while letting the backend manage MongoDB connections and optional Redis-backed rate limiting.
+- Authentication (JWT)
+- User-specific notes
+- Theme switching
+- Rich text editor
+- Search and pagination
