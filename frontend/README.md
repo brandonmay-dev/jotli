@@ -6,17 +6,7 @@ This frontend is configured for GitHub Pages deployment from the `jotli` repo.
 
 GitHub Pages can only host the static React app. The Express/MongoDB backend in `/backend` must be deployed somewhere else and exposed over HTTPS.
 
-Create a production env file before building for Pages:
-
-```bash
-cp .env.production.example .env.production
-```
-
-Then update `VITE_API_BASE_URL` to your deployed backend URL, for example:
-
-```env
-VITE_API_BASE_URL=https://your-backend.example.com/api
-```
+Add a repository secret named `VITE_API_BASE_URL` in GitHub and set it to your deployed backend URL, for example `https://your-backend.example.com/api`.
 
 ## Local Development
 
@@ -29,12 +19,13 @@ The Vite dev server proxies `/api` requests to `http://localhost:5001`.
 
 ## GitHub Pages Deployment
 
-```bash
-npm install
-npm run deploy
-```
+GitHub Pages deployment is handled by the workflow in `.github/workflows/deploy-pages.yml`.
 
-That builds the app with the GitHub Pages base path and publishes `dist/` to the `gh-pages` branch.
+Once the repository secret is set, push to `main` and the workflow will:
+
+1. Install frontend dependencies
+2. Build the app with the GitHub Pages base path
+3. Deploy `frontend/dist` to GitHub Pages
 
 ## Routing
 
