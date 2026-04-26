@@ -1,16 +1,41 @@
-# React + Vite
+# Jotli Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is configured for GitHub Pages deployment from the `jotli` repo.
 
-Currently, two official plugins are available:
+## Before You Deploy
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+GitHub Pages can only host the static React app. The Express/MongoDB backend in `/backend` must be deployed somewhere else and exposed over HTTPS.
 
-## React Compiler
+Create a production env file before building for Pages:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+cp .env.production.example .env.production
+```
 
-## Expanding the ESLint configuration
+Then update `VITE_API_BASE_URL` to your deployed backend URL, for example:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```env
+VITE_API_BASE_URL=https://your-backend.example.com/api
+```
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+The Vite dev server proxies `/api` requests to `http://localhost:5001`.
+
+## GitHub Pages Deployment
+
+```bash
+npm install
+npm run deploy
+```
+
+That builds the app with the GitHub Pages base path and publishes `dist/` to the `gh-pages` branch.
+
+## Routing
+
+The app uses `HashRouter` so note detail and create routes work on GitHub Pages without server-side rewrites.
